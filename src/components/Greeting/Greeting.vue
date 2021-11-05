@@ -6,11 +6,11 @@
 
 <script>
 export default {
-  name: "Greeting",
+  name: 'Greeting',
 
-  data() {
+  data () {
     return {
-      greeting: "Vue и TDD"
+      greeting: 'Vue и TDD'
     }
   }
 }
