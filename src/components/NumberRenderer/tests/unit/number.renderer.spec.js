@@ -15,6 +15,7 @@ describe('NumberRenderer', () => {
   it('выводит чётные числа', () => {
     const wrapper = mount(NumberRenderer, {
       propsData: {
+        even: false
       }
     })
 
