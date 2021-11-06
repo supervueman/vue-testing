@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
-import ParentWithAPICallChild from '@/components/ParentWithAPICallChild.vue'
-import ComponentWithAsyncCall from '@/components/ComponentWithAsyncCall.vue'
+import ParentWithAPICallChild from '@/components/Stub/ParentWithAPICallChild.vue'
+import ComponentWithAsyncCall from '@/components/Stub/ComponentWithAsyncCall.vue'
 
 describe('ParentWithAPICallChild.vue', () => {
   it('отрисовывается с помощью mount и делает вызов API', () => {
@@ -13,6 +13,6 @@ describe('ParentWithAPICallChild.vue', () => {
     // Or
     // const wrapper = shallowMount(ParentWithAPICallChild)
 
-    expect(wrapper.find(ComponentWithAsyncCall).exists()).toBe(true)
+    expect(wrapper.findComponent(ComponentWithAsyncCall).exists()).toBe(true)
   })
 })
