@@ -15,6 +15,6 @@ describe('Home page', () => {
       }
     })
 
-    wrapper.find('.pagetitle').text('Home')
+    expect(wrapper.find('.pagetitle').text()).toBe('Home')
   })
 })
