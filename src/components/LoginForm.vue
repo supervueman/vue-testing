@@ -1,16 +1,18 @@
 <template>
   <div class="card">
-    <div
-      v-if="alertData.alertMessage"
-      class="alert"
-      :class="{'alert-success': alertData.alertType === 'success', 'alert-error': alertData.alertType === 'error'}"
-    >
-      {{ alertData.alertMessage }}
-    </div>
-    <form class="form" @submit.prevent="login">
+    <transition name="fade">
+      <div
+        v-if="alertData.alertMessage"
+        class="alert"
+        :class="{'alert-success': alertData.alertType === 'success', 'alert-error': alertData.alertType === 'error'}"
+      >
+        {{ alertData.alertMessage }}
+      </div>
+    </transition>
+    <form class="form" @submit.prevent="submit">
       <input v-model="formData.email" placeholder="E-mail" name="email" id="email-input" class="input" />
       <input v-model="formData.password" placeholder="Password" name="password" type="password" id="password-input" class="input" />
-      <button class="button">Login</button>
+      <button :disabled="isLoading" class="button">Login</button>
     </form>
   </div>
 </template>
@@ -27,15 +29,37 @@ export default {
     alertData: {
       alertMessage: '',
       alertType: ''
-    }
+    },
+    isLoading: false
   }),
 
   methods: {
-    login () {
-      if (this.validation()) {
+    async login () {
+      return new Promise((resolve, reject) => {
         setTimeout(() => {
-          this.$router.push('/about')
+          resolve()
         }, 3000)
+      })
+    },
+    async submit () {
+      if (!this.validation()) {
+        setTimeout(() => {
+          this.alertData.alertMessage = ''
+        }, 1000)
+        return
+      }
+
+      this.isLoading = true
+
+      try {
+        this.alertData.alertType = 'success'
+        this.alertData.alertMessage = 'Success'
+        await this.login()
+        this.$router.push('/about')
+      } catch (err) {
+        console.error(err.message)
+      } finally {
+        this.isLoading = false
       }
     },
     validation () {
@@ -52,9 +76,6 @@ export default {
 
         return false
       }
-
-      this.alertData.alertType = 'success'
-      this.alertData.alertMessage = 'Success'
 
       return true
     }
@@ -117,7 +138,7 @@ export default {
 .button {
   width: 200px;
   height: 50px;
-color: #2c3e50;
+  color: #2c3e50;
   background-color: #fff;
   border: 1px solid #2c3e50;
   border-radius: 3px;
@@ -129,5 +150,14 @@ color: #2c3e50;
     border-color: #2c3e50;
     cursor: pointer;
   }
+}
+</style>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
